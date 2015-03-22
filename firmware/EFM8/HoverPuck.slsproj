@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:model="http://www.silabs.com/sls/IDE.ecore" name="HoverPuck" partCompatibility="com.silabs.mcu.si8051.efm8bb1_g.efm8bb10f2g" toolchainCompatibility="com.silabs.ide.si8051.keil:9.53.0" sdkCompatibility="com.silabs.sdk.si8051.sls:3.0.0" propertyScope="project" contentRoot="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/">
+  <folder name="inc" uri="HoverPuck/inc" includeAllFiles="false" includeAllFolders="false">
+    <file name="InitDevice.h" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/inc/InitDevice.h"/>
+    <file name="HoverPuck_API.h" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/inc/HoverPuck_API.h"/>
+  </folder>
+  <folder name="src" uri="HoverPuck/src" includeAllFiles="false" includeAllFolders="false">
+    <file name="HoverPuck_API.c" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/src/HoverPuck_API.c"/>
+    <file name="Interrupts.c" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/src/Interrupts.c"/>
+    <file name="InitDevice.c" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/src/InitDevice.c"/>
+    <file name="SILABS_STARTUP.A51" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/src/SILABS_STARTUP.A51"/>
+    <file name="HoverPuck_main.c" uri="file:/home/mrcruz/SimplicityStudio/v3_workspace/HoverPuck/src/HoverPuck_main.c"/>
+  </folder>
+  <file name="HoverPuck.hwconf" uri="HoverPuck/HoverPuck.hwconf"/>
+  <sourceFolder></sourceFolder>
+  <sourceFolder>src</sourceFolder>
+  <model:property key="projectCommon.buildArtifactType" value="EXE"/>
+  <includePath languageCompatibility="c asm" uri="unresolved:$%7BProjDirPath%7D/inc/"/>
+  <toolOption toolId="com.silabs.ide.si8051.keil.toolchain.assembler" optionId="com.silabs.ide.si8051.keil.assembler.category.symbols.def" value=""/>
+  <configuration name="com.silabs.ide.si8051.keil.debug#com.silabs.ide.si8051.keil:9.53.0" label="Keil 8051 v9.53 - Debug" kitCompatibility="com.silabs.kit.si8051.efm8bb1_slstk2020a" stockConfigCompatibility="com.silabs.ide.toolchain.core.debug">
+    <model:description></model:description>
+  </configuration>
+  <configuration name="com.silabs.ide.si8051.keil.release#com.silabs.ide.si8051.keil:9.53.0" label="Keil 8051 v9.53 - Release" kitCompatibility="com.silabs.ide.kit.none" stockConfigCompatibility="com.silabs.ide.toolchain.core.release">
+    <model:description></model:description>
+  </configuration>
+</project>
