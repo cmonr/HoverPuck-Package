@@ -72,7 +72,7 @@ SI_INTERRUPT (TIMER3_ISR, TIMER3_IRQn)
 	TMR2CN0_TF2H = 0;
 	TMR2CN0_TF2L = 0;
 
-	msTicks++;
+	//msTicks++;
 }
 
 

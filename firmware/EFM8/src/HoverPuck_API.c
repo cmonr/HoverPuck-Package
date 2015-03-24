@@ -6,15 +6,16 @@
 uint32_t msTicks;
 
 
+
 void hoverPuck_Init()
 {
 	// Peripherals already enabled
 
 	// Enable Bluetooth
-	BLE_RST = 1;
+	BLE_RST = 0;
 
 	// Turn on 20v Regulator
-	EN_20V = 1;
+	EN_20V = 0;
 
 	// Give regulator time to ramp
 	//delayMS(100);
@@ -24,7 +25,7 @@ void hoverPuck_Init()
 	hoverPuck_EnableMB1();
 
 	// Turn on LEDs
-	STATUS = 1;
+	STATUS = 0;
 }
 
 
@@ -34,14 +35,14 @@ void hoverPuck_Update()
 	if (!hoverPuck_lipoGood())
 	{
 		// Disable Bluetooth
-		BLE_RST = 0;
+		BLE_RST = 1;
 
 		// Disable MicroBlowers
 		hoverPuck_DisableMB0();
 		hoverPuck_DisableMB1();
 
 		// Turn off 20v Regulator
-		EN_20V = 0;
+		EN_20V = 1;
 
 		// Turn off status LED
 		STATUS = 1;

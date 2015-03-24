@@ -4,7 +4,6 @@
 /*
 Peripherals:
   SYSCLK - 24.5 MHz / 16
-  TIMER0 - PCA0 Clock Source
   TIMER1 - UART Baud Rate
   TIMER2 - System Update Rate (8Hz)
   TIMER3 - 1ms System Tick
@@ -45,6 +44,9 @@ int main (void)
 
 	// Initialize HoverPuck Systems
 	hoverPuck_Init();
+
+	// Enable interrupts
+	IE_EA = 1;
 
 	// Enter Idle Mode
 	//  Everything is interrupt driven
