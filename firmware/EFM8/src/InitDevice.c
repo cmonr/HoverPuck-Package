@@ -436,16 +436,16 @@ extern void TIMER16_2_enter_DefaultMode_from_RESET(void) {
 
 	// $[TMR2RLH - Timer 2 Reload High Byte]
 	/*
-	// TMR2RLH (Timer 2 Reload High Byte) = 0x83
+	// TMR2RLH (Timer 2 Reload High Byte) = 0x06
 	*/
-	TMR2RLH = (0x83 << TMR2RLH_TMR2RLH__SHIFT);
+	TMR2RLH = (0x06 << TMR2RLH_TMR2RLH__SHIFT);
 	// [TMR2RLH - Timer 2 Reload High Byte]$
 
 	// $[TMR2RLL - Timer 2 Reload Low Byte]
 	/*
-	// TMR2RLL (Timer 2 Reload Low Byte) = 0x63
+	// TMR2RLL (Timer 2 Reload Low Byte) = 0xC6
 	*/
-	TMR2RLL = (0x63 << TMR2RLL_TMR2RLL__SHIFT);
+	TMR2RLL = (0xC6 << TMR2RLL_TMR2RLL__SHIFT);
 	// [TMR2RLL - Timer 2 Reload Low Byte]$
 
 	// $[TMR2CN0]
