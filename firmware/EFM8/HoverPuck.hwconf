@@ -10,7 +10,7 @@
     <property object="ADC_0" propertyId="adc.configuration.sysclk" value="6.125 MHz"/>
     <property object="ADC_0" propertyId="adc.control.enableadc" value="Enabled"/>
     <property object="ADC_0" propertyId="adc.control.timer0overflowfrequency" value="408.333 kHz"/>
-    <property object="ADC_0" propertyId="adc.control.timer2overflowfrequency" value="16.000 Hz"/>
+    <property object="ADC_0" propertyId="adc.control.timer2overflowfrequency" value="8.000 Hz"/>
     <property object="ADC_0" propertyId="adc.control.timer3overflowfrequency" value="1.000 kHz"/>
     <property object="ADC_0" propertyId="adc.control.timer4overflowfrequency" value="0 Hz"/>
     <property object="ADC_0" propertyId="adc.multiplexerselection.positiveinputselection" value="ADC0.1 (P0.1)"/>
@@ -83,10 +83,10 @@
     <property object="TIMER16_2" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER16_2" propertyId="timer16.control.runcontrol" value="Start"/>
     <property object="TIMER16_2" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
-    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="16"/>
-    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="33635"/>
-    <property object="TIMER16_2" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="131"/>
-    <property object="TIMER16_2" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="99"/>
+    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="8"/>
+    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="1734"/>
+    <property object="TIMER16_2" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="6"/>
+    <property object="TIMER16_2" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="198"/>
     <property object="TIMER16_3" propertyId="ABPeripheral.included" value="true"/>
     <property object="TIMER16_3" propertyId="timer16.control.captureinput" value="Low Frequency Oscillator Falling Edge"/>
     <property object="TIMER16_3" propertyId="timer16.control.clocksource" value="SYSCLK"/>

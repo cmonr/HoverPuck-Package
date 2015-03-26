@@ -3,7 +3,9 @@
 
 #include "HoverPuck_API.h"
 
-uint32_t msTicks;
+uint32_t msTicks = 0;
+uint8_t rxData = 0;
+uint8_t ctr = 0;
 
 
 
@@ -11,9 +13,23 @@ void hoverPuck_Init()
 {
 	// Peripherals already enabled
 
-	// Enable Bluetooth
+	//
+	// BLE112/3
+	//
+	// Bring BLE module out of reset
 	BLE_RST = 0;
 
+	// TODO: Wait for 'READY\r\n'
+
+	// TODO: Send APT\r\n
+
+	// TODO: Blink Status LED to indicate waiting for connection
+	// TODO: Wait for DATA\r\n
+
+
+	//
+	// Microblowers
+	//
 	// Turn on 20v Regulator
 	EN_20V = 0;
 
@@ -50,7 +66,7 @@ void hoverPuck_Update()
 		// Disable all interrupts
 		//  This effectively disables the entire
 		//  system until reset
-		IE_EA = 0;
+		//IE_EA = 0;
 	}
 	else
 	{
@@ -59,6 +75,9 @@ void hoverPuck_Update()
 		// Heartbeat
 		STATUS = !STATUS;
 	}
+
+	//sendData(ADC0 >> 2);
+	sendData(ctr++);
 }
 
 
@@ -85,6 +104,16 @@ void hoverPuck_DisableMB1()
 {
 	PCA0CPM1 &= ~PCA0CPM1_TOG__BMASK;
 }
+
+void sendData(uint8_t d)
+{
+	SBUF0 = d;
+}
+
+//void sendData(uint8_t data)
+//{
+//	SBUF0 = data;
+//}
 
 
 bool hoverPuck_lipoGood()

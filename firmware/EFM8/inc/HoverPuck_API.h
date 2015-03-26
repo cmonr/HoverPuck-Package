@@ -15,6 +15,8 @@ SI_SBIT(EN_20V,  SFR_P0, 0);
 SI_SBIT(STATUS,  SFR_P1, 5);
 SI_SBIT(BLE_RST, SFR_P1, 0);
 
+extern uint8_t rxData;
+
 
 void hoverPuck_Init( void );
 void hoverPuck_Update( void );
@@ -23,6 +25,8 @@ void hoverPuck_EnableMB0( void );
 void hoverPuck_EnableMB1( void );
 void hoverPuck_DisableMB0( void );
 void hoverPuck_DisableMB1( void );
+
+void sendData( uint8_t );
 
 
 // (3v/2)/3.3v * (2^10 - 1) = 465
