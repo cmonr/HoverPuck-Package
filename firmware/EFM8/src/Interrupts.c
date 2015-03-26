@@ -22,7 +22,18 @@
 //-----------------------------------------------------------------------------
 SI_INTERRUPT (UART0_ISR, UART0_IRQn)
 {
+	if (SCON0_RI)
+	{
+		// We received data
+		SCON0_RI = 0;
+		rxData = SBUF0;
+	}
 
+	if (SCON0_TI)
+	{
+		// We transmitted data
+		SCON0_TI = 0;
+	}
 }
 
 
