@@ -5,13 +5,17 @@
 
 uint32_t msTicks = 0;
 uint8_t rxData = 0;
-uint8_t ctr = 0;
+uint8_t ledCtr = 0;
 
-
+uint8_t state = DISCONNECTED;
 
 void hoverPuck_Init()
 {
+	// Disconnect BC UART pins
+	BC_EN = 0;
+
 	// Peripherals already enabled
+
 
 	//
 	// BLE112/3
@@ -19,12 +23,22 @@ void hoverPuck_Init()
 	// Bring BLE module out of reset
 	BLE_RST = 0;
 
-	// TODO: Wait for 'READY\r\n'
+	// Wait for BLE Module to send READY
+	readStr("READY");
 
-	// TODO: Send APT\r\n
+	// Set broadcasting
+	writeStr("APT\r\n");
 
-	// TODO: Blink Status LED to indicate waiting for connection
-	// TODO: Wait for DATA\r\n
+	// Update LED Status
+	state = DISCONNECTED;
+
+	// Wait for BLE Module to send DATA
+	readStr("DATA");
+	state = CONNECTED;
+
+
+
+	writeStr("HELLO!");
 
 
 	//
@@ -39,45 +53,60 @@ void hoverPuck_Init()
 	// Enable MicroBlowers
 	hoverPuck_EnableMB0();
 	hoverPuck_EnableMB1();
-
-	// Turn on LEDs
-	STATUS = 0;
 }
 
 
 // Update system at 8Hz
 void hoverPuck_Update()
 {
-	if (!hoverPuck_lipoGood())
+	// Check Lipo Status
+	switch (state)
 	{
-		// Disable Bluetooth
-		BLE_RST = 1;
+		case DISCONNECTED:
+			break;
+		case CONNECTED:
+			// TODO: Parse simple UART CLI
+			// TODO: Drive MicroBlowers
 
-		// Disable MicroBlowers
-		hoverPuck_DisableMB0();
-		hoverPuck_DisableMB1();
+			// Check Lipo status
+			if (hoverPuck_lipoGood())
+			{
+				// Send battery status
+				writeChar('0');
+				writeChar('x');
+				writeChar(((ADC0 >> 2) & 0xF0) >> 4 + '0');
+				writeChar(((ADC0 >> 2) & 0x0F) + '0');
+				writeChar('\n');
 
-		// Turn off 20v Regulator
-		EN_20V = 1;
+				break;
+			}
+			else
+			{
+				//
+				// Conserve as much power as possible
+				//
 
-		// Turn off status LED
-		STATUS = 1;
+				// Disable Bluetooth
+				BLE_RST = 1;
 
-		// Disable all interrupts
-		//  This effectively disables the entire
-		//  system until reset
-		//IE_EA = 0;
+				// Disable MicroBlowers
+				hoverPuck_DisableMB0();
+				hoverPuck_DisableMB1();
+
+				// Turn off 20v Regulator
+				EN_20V = 1;
+
+				// TODO: Disable all interrupts except Timer2
+
+				state = LIPO_LOW;
+			}
+		case LIPO_LOW:
+			break;
 	}
-	else
-	{
-		// TODO: Parse simple UART CLI
 
-		// Heartbeat
-		STATUS = !STATUS;
-	}
-
-	//sendData(ADC0 >> 2);
-	sendData(ctr++);
+	// Generate Blink pattern from state
+	ledCtr = (ledCtr + 1) & 0x07;
+	LED = !((state >> ledCtr) & 0x01);
 }
 
 
@@ -105,17 +134,85 @@ void hoverPuck_DisableMB1()
 	PCA0CPM1 &= ~PCA0CPM1_TOG__BMASK;
 }
 
-void sendData(uint8_t d)
+//
+// Simple String Helper functions
+//
+int8_t readChar()
 {
-	SBUF0 = d;
+	rxData = 0;
+	while(rxData == 0)
+	{
+		// Chapter 7.3 in RM
+		PCON0 |= PCON0_IDLE__IDLE;
+		PCON0 = PCON0;
+	}
+
+	return rxData;
 }
 
-//void sendData(uint8_t data)
-//{
-//	SBUF0 = data;
-//}
+void readStr(int8_t* str)
+{
+	int8_t buff[16];
+	int8_t buffIndex = 0;
+
+	while(1)
+	{
+		// Add data to buffer
+		buff[buffIndex++] = readChar();
+
+		// Check strings
+		if (rxData == '\r')
+		{
+			int8_t i=0;
+			int8_t* strPtr = str;
+			for(; i<buffIndex; i++)
+			{
+				if ((*strPtr) != buff[i])
+				{
+					break;
+				}
+				strPtr++;
+			}
+
+			// If at end of index, string was matched
+			//  Subtract 1 due to \r
+			if (i == buffIndex-1)
+				return;
+
+			// Otherwise, reset everything
+			buffIndex = 0;
+		}
+	}
+}
+
+void writeChar(int8_t c)
+{
+	SBUF0 = c;
+	// Wait for TI interrupt to fire
+	while(SCON0_TI == 0)
+	{
+		// Chapter 7.3 in RM
+		PCON0 |= PCON0_IDLE__IDLE;
+		PCON0 = PCON0;
+	}
+
+	// Transmit success interrupt woke us up
+	SCON0_TI = 0;
+}
+
+void writeStr(int8_t* str)
+{
+	int8_t c;
+	while((c = *(str++)) != 0)
+	{
+		writeChar(c);
+	}
+}
 
 
+//
+// Misc Helper functions
+//
 bool hoverPuck_lipoGood()
 {
 	// Start ADC Conversion

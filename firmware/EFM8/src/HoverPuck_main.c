@@ -45,9 +45,6 @@ int main (void)
 	// Initialize HoverPuck Systems
 	hoverPuck_Init();
 
-	// Enable interrupts
-	IE_EA = 1;
-
 	// Enter Idle Mode
 	//  Everything is interrupt driven
 	//  The fun stuff happens in hoverPuck_Update
