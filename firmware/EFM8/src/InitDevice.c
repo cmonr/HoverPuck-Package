@@ -191,15 +191,13 @@ extern void PORTS_1_enter_DefaultMode_from_RESET(void) {
 	// B2 (Port 1 Bit 2 Output Mode) = OPEN_DRAIN (P1.2 output is open-
 	//     drain.)
 	// B3 (Port 1 Bit 3 Output Mode) = PUSH_PULL (P1.3 output is push-pull.)
-	// B4 (Port 1 Bit 4 Output Mode) = OPEN_DRAIN (P1.4 output is open-
-	//     drain.)
+	// B4 (Port 1 Bit 4 Output Mode) = PUSH_PULL (P1.4 output is push-pull.)
 	// B5 (Port 1 Bit 5 Output Mode) = PUSH_PULL (P1.5 output is push-pull.)
-	// B6 (Port 1 Bit 6 Output Mode) = OPEN_DRAIN (P1.6 output is open-
-	//     drain.)
+	// B6 (Port 1 Bit 6 Output Mode) = PUSH_PULL (P1.6 output is push-pull.)
 	*/
 	P1MDOUT = P1MDOUT_B0__OPEN_DRAIN | P1MDOUT_B1__OPEN_DRAIN | P1MDOUT_B2__OPEN_DRAIN
-		 | P1MDOUT_B3__PUSH_PULL | P1MDOUT_B4__OPEN_DRAIN | P1MDOUT_B5__PUSH_PULL
-		 | P1MDOUT_B6__OPEN_DRAIN;
+		 | P1MDOUT_B3__PUSH_PULL | P1MDOUT_B4__PUSH_PULL | P1MDOUT_B5__PUSH_PULL
+		 | P1MDOUT_B6__PUSH_PULL;
 	// [P1MDOUT - Port 1 Output Mode]$
 
 	// $[P1MDIN - Port 1 Input Mode]
@@ -523,7 +521,7 @@ extern void TIMER16_3_enter_DefaultMode_from_RESET(void) {
 extern void TIMER_SETUP_0_enter_DefaultMode_from_RESET(void) {
 	// $[CKCON0 - Clock Control 0]
 	/*
-	// SCA (Timer 0/1 Prescale) = SYSCLK_DIV_12 (System clock divided by 12.)
+	// SCA (Timer 0/1 Prescale) = SYSCLK_DIV_4 (System clock divided by 4.)
 	// T0M (Timer 0 Clock Select) = SYSCLK (Counter/Timer 0 uses the system
 	//     clock.)
 	// T2MH (Timer 2 High Byte Clock Select) = EXTERNAL_CLOCK (Timer 2 high
@@ -534,12 +532,11 @@ extern void TIMER_SETUP_0_enter_DefaultMode_from_RESET(void) {
 	//     byte uses the clock defined by T3XCLK in TMR3CN0.)
 	// T3ML (Timer 3 Low Byte Clock Select) = SYSCLK (Timer 3 low byte uses
 	//     the system clock.)
-	// T1M (Timer 1 Clock Select) = PRESCALE (Timer 1 uses the clock defined
-	//     by the prescale field, SCA.)
+	// T1M (Timer 1 Clock Select) = SYSCLK (Timer 1 uses the system clock.)
 	*/
-	CKCON0 = CKCON0_SCA__SYSCLK_DIV_12 | CKCON0_T0M__SYSCLK | CKCON0_T2MH__EXTERNAL_CLOCK
+	CKCON0 = CKCON0_SCA__SYSCLK_DIV_4 | CKCON0_T0M__SYSCLK | CKCON0_T2MH__EXTERNAL_CLOCK
 		 | CKCON0_T2ML__EXTERNAL_CLOCK | CKCON0_T3MH__EXTERNAL_CLOCK | CKCON0_T3ML__SYSCLK
-		 | CKCON0_T1M__PRESCALE;
+		 | CKCON0_T1M__SYSCLK;
 	// [CKCON0 - Clock Control 0]$
 
 	// $[TMOD - Timer 0/1 Mode]

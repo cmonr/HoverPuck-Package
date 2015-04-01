@@ -6,6 +6,7 @@
 uint32_t msTicks = 0;
 uint8_t rxData = 0;
 uint8_t ledCtr = 0;
+uint8_t ctr = 0;
 
 uint8_t state = DISCONNECTED;
 
@@ -13,6 +14,7 @@ void hoverPuck_Init()
 {
 	// Disconnect BC UART pins
 	BC_EN = 0;
+	rxLED = 1;
 
 	// Peripherals already enabled
 
@@ -27,18 +29,23 @@ void hoverPuck_Init()
 	readStr("READY");
 
 	// Set broadcasting
-	writeStr("APT\r\n");
+	writeStr("ATP\n");
 
 	// Update LED Status
 	state = DISCONNECTED;
 
 	// Wait for BLE Module to send DATA
 	readStr("DATA");
+
+
+	writeStr("Hi");
+
+	readStr("abcde");
 	state = CONNECTED;
 
 
 
-	writeStr("HELLO!");
+	//writeStr("HELLO!");
 
 
 	//
@@ -68,19 +75,16 @@ void hoverPuck_Update()
 			// TODO: Parse simple UART CLI
 			// TODO: Drive MicroBlowers
 
-			// Check Lipo status
-			if (hoverPuck_lipoGood())
-			{
-				// Send battery status
-				writeChar('0');
-				writeChar('x');
-				writeChar(((ADC0 >> 2) & 0xF0) >> 4 + '0');
-				writeChar(((ADC0 >> 2) & 0x0F) + '0');
-				writeChar('\n');
+			// Send battery status
+			/*writeChar('0');
+			writeChar('x');
+			writeChar(((ADC0 >> 2) & 0xF0) >> 4 + '0');
+			writeChar(((ADC0 >> 2) & 0x0F) + '0');
+			writeChar('\n');*/
+			//writeChar(ctr++);
 
-				break;
-			}
-			else
+			// Check Lipo status
+			/*if (!hoverPuck_lipoGood())
 			{
 				//
 				// Conserve as much power as possible
@@ -99,14 +103,18 @@ void hoverPuck_Update()
 				// TODO: Disable all interrupts except Timer2
 
 				state = LIPO_LOW;
-			}
+			}*/
+			break;
 		case LIPO_LOW:
 			break;
 	}
 
 	// Generate Blink pattern from state
-	ledCtr = (ledCtr + 1) & 0x07;
+	ledCtr = ++ledCtr & 0x07;
 	LED = !((state >> ledCtr) & 0x01);
+
+	// Update other LED based on what was received
+	rxLED = !(rxData >> 7);
 }
 
 
@@ -143,8 +151,8 @@ int8_t readChar()
 	while(rxData == 0)
 	{
 		// Chapter 7.3 in RM
-		PCON0 |= PCON0_IDLE__IDLE;
-		PCON0 = PCON0;
+		//PCON0 |= PCON0_IDLE__IDLE;
+		//PCON0 = PCON0;
 	}
 
 	return rxData;
@@ -161,7 +169,7 @@ void readStr(int8_t* str)
 		buff[buffIndex++] = readChar();
 
 		// Check strings
-		if (rxData == '\r')
+		if (rxData == '\r' || rxData == '\n')
 		{
 			int8_t i=0;
 			int8_t* strPtr = str;
@@ -176,7 +184,8 @@ void readStr(int8_t* str)
 
 			// If at end of index, string was matched
 			//  Subtract 1 due to \r
-			if (i == buffIndex-1)
+			//  Make sure single character isn't being compared against
+			if (i == buffIndex-1 && buffIndex != 1)
 				return;
 
 			// Otherwise, reset everything
@@ -192,8 +201,8 @@ void writeChar(int8_t c)
 	while(SCON0_TI == 0)
 	{
 		// Chapter 7.3 in RM
-		PCON0 |= PCON0_IDLE__IDLE;
-		PCON0 = PCON0;
+		//PCON0 |= PCON0_IDLE__IDLE;
+		//PCON0 = PCON0;
 	}
 
 	// Transmit success interrupt woke us up
@@ -222,8 +231,8 @@ bool hoverPuck_lipoGood()
 	while (ADC0CN0_ADBUSY == 1)
 	{
 		// Chapter 7.3 in RM
-		PCON0 |= PCON0_IDLE__IDLE;
-		PCON0 = PCON0;
+		//PCON0 |= PCON0_IDLE__IDLE;
+		//PCON0 = PCON0;
 	}
 
 	// Return comparison

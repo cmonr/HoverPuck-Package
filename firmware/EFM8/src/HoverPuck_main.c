@@ -51,7 +51,7 @@ int main (void)
 	while(1)
 	{
 		// Chapter 7.3 in RM
-		PCON0 |= PCON0_IDLE__IDLE;
-		PCON0 = PCON0;
+		//PCON0 |= PCON0_IDLE__IDLE;
+		//PCON0 = PCON0;
 	}
 }
